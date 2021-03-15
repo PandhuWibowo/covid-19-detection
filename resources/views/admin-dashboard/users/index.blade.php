@@ -229,7 +229,7 @@
                 </div>
                 <!-- /.modal-dialog -->
               </div>
-              <div class="modal fade" id="modal-xl-remove">
+              <div class="modal fade" id="remove-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -239,11 +239,12 @@
                       </button>
                     </div>
                     <div class="modal-body">
+                      <input type="hidden" name="removeIdUser" id="removeIdUser">
                       Anda yakin ingin menghapusnya?
                     </div>
                     <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
+                      <button type="submit" class="btn btn-primary" id="btn-hapus">Hapus</button>
                     </div>
                   </div>
                   <!-- /.modal-content -->
@@ -452,8 +453,51 @@
       })
 
     // Show Modal for Deleted
+    $('.removeUser').on('click', function() {
+      const idUser = $(this).data('id_user')
+      $('#removeIdUser').val(idUser)
+      const deleteModal = $('#remove-user')
+      deleteModal.modal('show')
+    })
 
     // Delete User
+    $('#btn-hapus').on('click', function(e) {
+      e.preventDefault()
+
+      const id = $('#removeIdUser').val()
+
+      try {
+        if (!id || typeof id !== 'string') alert('Id harus tidak boleh string kosong')
+
+        csrfProtection()
+        $.ajax({
+          url: `/users/${id}`,
+          type: 'DELETE',
+          dataType: 'json',
+          async: true,
+          data: {},
+          error: function (err) {
+            console.error(err)
+            alert(err)
+            return
+          },
+          success: function (response) {
+            console.log(response)
+            if (response.status === 200) {
+              alert(response.message)
+              const deleteModal = $('#remove-user')
+              deleteModal.modal('hide')
+              location.reload()
+            } else alert(response.message)
+            return
+          }
+        })
+      } catch (err) {
+        console.error(err)
+        alert(err)
+        return
+      }
+    })
   })
 </script>
 </body>

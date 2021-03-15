@@ -25,6 +25,7 @@ Route::middleware(['AuthCheck'])->prefix('users')->group(function() {
     Route::get('/', [UserController::class, 'index']);
     Route::post('/', [UserController::class, 'createUser']);
     Route::put('/{id_user}', [UserController::class, 'updateUser']);
+    Route::delete('/{id_user}', [UserController::class, 'deleteUser']);
 });
 
 /**

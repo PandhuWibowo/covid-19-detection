@@ -93,4 +93,30 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function deleteUser($id_user) {
+        try {
+            $userExisting = User::find($id_user);
+            if (empty($userExisting)) return response()->json([
+                'status' => 200,
+                'message' => 'User tidak terdaftar',
+            ], 200);
+
+            if ($userExisting->delete()) return response()->json([
+                'status' => 200,
+                'message' => 'User baru berhasil dihapus'
+            ], 200);
+
+            return response()->json([
+                'status' => 400,
+                'message' => 'User gagal dihapus'
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e
+            ], 500);
+        }
+    }
 }
