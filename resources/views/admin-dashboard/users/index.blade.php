@@ -170,8 +170,8 @@
                       <td>{{ $row->no_telp }}</td>
                       <td>{{ $row->jabatan }}</td>
                       <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-id_user="{{ $row->id_user }}" data-nama="{{ $row->nama }}" data-no_telp="{{ $row->no_telp }}">Ubah</button>
-                        <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-id_user="{{ $row->id_user }}">Hapus</button>
+                        <a class="editUser btn btn-block btn-outline-secondary btn-flat" data-id_user="{{ $row->id_user }}" data-nama="{{ $row->nama }}" data-no_telp="{{ $row->no_telp }}" data-jabatan="{{ $row->jabatan }}" data-alamat="{{ $row->alamat }}">Ubah</a>
+                        <a class="removeUser btn btn-block btn-outline-danger btn-flat" data-id_user="{{ $row->id_user }}">Hapus</a>
                       </td>
                     </tr>
                   @endforeach
@@ -187,7 +187,7 @@
                 </table>
               </div>
               <!-- /.card-body -->
-              <div class="modal fade" id="modal-xl-edit">
+              <div class="modal fade" id="update-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -196,33 +196,34 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
-                      <form role="form">
+                    <form role="form">
+                      <div class="modal-body">
                         <div class="card-body">
+                          <input type="hidden" name="ubahIdUser" id="ubahIdUser">
                           <div class="form-group">
                             <label for="nama">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama" value="John Doe">
+                            <input type="text" class="form-control" id="ubahNama" placeholder="Nama">
                           </div>
                           <div class="form-group">
                             <label for="no_telp">No. Telpon</label>
-                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon" value="1234567890">
+                            <input type="text" class="form-control" id="ubahNoTelp" placeholder="No. Telpon">
                           </div>
                           <div class="form-group">
                             <label for="jabatan">Jabatan</label>
-                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan" value="Super Admin">
+                            <input type="text" class="form-control" id="ubahJabatan" placeholder="Jabatan">
                           </div>
                           <div class="form-group">
                             <label>Alamat</label>
-                            <textarea class="form-control" rows="3" placeholder="Alamat">Jl. Pahlawan Gang Merdeka</textarea>
+                            <textarea class="form-control" rows="3" placeholder="Alamat" id="ubahAlamat"></textarea>
                           </div>
                         </div>
                         <!-- /.card-body -->
-                      </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-ubah">Simpan</button>
+                      </div>
+                    </form>
                   </div>
                   <!-- /.modal-content -->
                 </div>
@@ -379,8 +380,76 @@
       }
     })
     // Show User to Edit Modal
+    // Edit Modal
+    $('.editUser').on('click', function() {
+      // Dari Data Table
+      const idUser = $(this).data('id_user')
+      const nama = $(this).data('nama')
+      const noTelp = $(this).data('no_telp')
+      const jabatan = $(this).data('jabatan')
+      const alamat = $(this).data('alamat')
+
+      // Ke Modal
+      $('#ubahIdUser').val(idUser)
+      $('#ubahNama').val(nama)
+      $('#ubahNoTelp').val(noTelp)
+      $('#ubahJabatan').val(jabatan)
+      $('textarea#ubahAlamat').val(alamat)
+      const editModal = $('#update-user')
+      editModal.modal('show')
+    })
 
     // Edit User
+    $('#btn-ubah').on('click', function(e) {
+        e.preventDefault()
+
+        const idUser = $('#ubahIdUser').val()
+        const nama = $('#ubahNama').val()
+        const noTelp = $('#ubahNoTelp').val()
+        const jabatan = $('#ubahJabatan').val()
+        const alamat = $('textarea#ubahAlamat').val()
+
+        try {
+          if (!idUser || typeof idUser !== 'string') alert('Id User harus tidak boleh string kosong')
+          if (!nama || typeof nama !== 'string') alert('Nama harus tidak boleh string kosong')
+          if (!noTelp || typeof noTelp !== 'string') alert('Nomor Telepon harus tidak boleh kosong')
+          if (!jabatan || typeof jabatan !== 'string') alert('Jabatan harus tidak boleh string kosong')
+          if (!alamat || typeof alamat !== 'string') alert('Alamat harus tidak boleh string kosong')
+
+          csrfProtection()
+          $.ajax({
+            url: `/users/${idUser}`,
+            type: 'PUT',
+            dataType: 'json',
+            async: true,
+            data: {
+              nama,
+              no_telp: noTelp,
+              jabatan,
+              alamat
+            },
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 200) {
+                alert(response.message)
+                const editModal = $('#editUser')
+                editModal.modal('hide')
+                location.reload()
+              } else alert(response.message)
+              return
+            }
+          })
+        } catch (err) {
+          console.error(err)
+          alert(err)
+          return
+        }
+      })
 
     // Show Modal for Deleted
 

@@ -20,6 +20,7 @@ class User extends Authenticatable
         'no_telp',
         'jabatan'
     ];
+    protected $primaryKey = 'id_user';
 
     public $timestamps = false;
 }

@@ -55,6 +55,42 @@ class UserController extends Controller
                 'error' => $e
             ], 500);
         }
+    }
 
+    public function updateUser(Request $request, $id_user) {
+        try {
+            // $request->validate([
+            //     'nama' => 'required|string',
+            //     'no_telp' => 'required|string|unique:users',
+            //     'jabatan' => 'required|string',
+            //     'alamat' => 'required|string'
+            // ]);
+
+            $userExisting = User::find($id_user);
+            if (empty($userExisting)) return response()->json([
+                'status' => 200,
+                'message' => 'User tidak terdaftar',
+            ], 200);
+
+            $userExisting->nama = $request->nama;
+            $userExisting->jabatan = $request->jabatan;
+            $userExisting->alamat = $request->alamat;
+            $userExisting->no_telp = $request->no_telp;
+            if ($userExisting->save()) return response()->json([
+                'status' => 200,
+                'message' => 'User baru berhasil diubah'
+            ], 200);
+
+            return response()->json([
+                'status' => 400,
+                'message' => 'User gagal diubah'
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e
+            ], 500);
+        }
     }
 }
