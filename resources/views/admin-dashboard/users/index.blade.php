@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -103,9 +104,9 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#modal-xl">Tambah User</button>
+                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#add-user">Tambah User</button>
               </div>
-              <div class="modal fade" id="modal-xl">
+              <div class="modal fade" id="add-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -114,37 +115,38 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
-                      <form role="form">
-                        <div class="card-body">
-                          <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama">
+                    <form role="form">
+                      <div class="modal-body">
+                          <div class="card-body">
+                            <div class="form-group">
+                              <label for="nama">Nama</label>
+                              <input type="text" class="form-control" id="nama" placeholder="Nama">
+                            </div>
+                            <div class="form-group">
+                              <label for="password">Password</label>
+                              <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                              <label for="no_telp">No. Telpon</label>
+                              <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
+                            </div>
+                            <div class="form-group">
+                              <label for="jabatan">Jabatan</label>
+                              <input type="text" class="form-control" id="jabatan" placeholder="Jabatan">
+                            </div>
+                            <div class="form-group">
+                              <label>Alamat</label>
+                              <textarea class="form-control" rows="3" placeholder="Alamat" id="alamat"></textarea>
+                            </div>
                           </div>
-                          <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
-                          </div>
-                          <div class="form-group">
-                            <label for="no_telp">No. Telpon</label>
-                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
-                          </div>
-                          <div class="form-group">
-                            <label for="jabatan">Jabatan</label>
-                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan">
-                          </div>
-                          <div class="form-group">
-                            <label>Alamat</label>
-                            <textarea class="form-control" rows="3" placeholder="Alamat"></textarea>
-                          </div>
-                        </div>
-                        <!-- /.card-body -->
-                      </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                          <!-- /.card-body -->
+
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
+                      </div>
+                    </form>
                   </div>
                   <!-- /.modal-content -->
                 </div>
@@ -168,8 +170,8 @@
                       <td>{{ $row->no_telp }}</td>
                       <td>{{ $row->jabatan }}</td>
                       <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-toggle="modal" data-target="#modal-xl-edit">Ubah</button>
-                        <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-xl-remove">Hapus</button>
+                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-id_user="{{ $row->id_user }}" data-nama="{{ $row->nama }}" data-no_telp="{{ $row->no_telp }}">Ubah</button>
+                        <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-id_user="{{ $row->id_user }}">Hapus</button>
                       </td>
                     </tr>
                   @endforeach
@@ -305,6 +307,85 @@
       "responsive": true,
     });
   });
+</script>
+<script>
+  function csrfProtection() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  }
+  $(document).ready(function() {
+    // Save new user
+    $("#btn-save").on('click', function(e) {
+      e.preventDefault()
+
+      const nama = $("#nama").val()
+      const noTelp = $("#no_telp").val()
+      const alamat = $("#alamat").val()
+      const password = $("#password").val()
+      const jabatan = $("#jabatan").val()
+
+      try {
+        csrfProtection()
+        if (!nama || typeof nama !== 'string') {
+          alert('Nama harus tidak boleh string kosong')
+          return
+        }
+        if (!noTelp || typeof noTelp !== 'string') {
+          alert('No Telepon harus tidak boleh string kosong')
+          return
+        }
+        if (!alamat || typeof alamat !== 'string') {
+          alert('Alamat harus tidak boleh string kosong')
+          return
+        }
+        if (!password || typeof password !== 'string') {
+          alert('Password harus tidak boleh string kosong')
+          return
+        }
+        if (!jabatan || typeof jabatan !== 'string') {
+          alert('Jabatan harus tidak boleh string kosong')
+          return
+        }
+
+        $.ajax({
+            url: '/users',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {nama, no_telp: noTelp, alamat, password, jabatan},
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 201) {
+                alert(response.message)
+                const addModal = $('#add-user')
+                addModal.modal('hide')
+                location.reload()
+              } else alert(response.message)
+              return
+            }
+          })
+      } catch (error) {
+        console.error(error)
+        alert(error)
+        return
+      }
+    })
+    // Show User to Edit Modal
+
+    // Edit User
+
+    // Show Modal for Deleted
+
+    // Delete User
+  })
 </script>
 </body>
 </html>

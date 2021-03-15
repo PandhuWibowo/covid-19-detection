@@ -23,6 +23,7 @@ Route::middleware(['AuthCheck'])->get('dashboard', [SignInController::class, 'da
  */
 Route::middleware(['AuthCheck'])->prefix('users')->group(function() {
     Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'createUser']);
 });
 
 /**
