@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Cari Alamat</title>
+  <title>Covid19 Detection</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,10 +39,10 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -68,9 +68,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/signout">
-              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
-            </a>
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Sign Out</a>
           </li>
         </ul>
       </nav>
@@ -164,69 +162,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-toggle="modal" data-target="#modal-xl-edit">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-xl-remove">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
+                  @foreach($users as $row)
+                    <tr>
+                      <td>{{ $row->nama }}</td>
+                      <td>{{ $row->no_telp }}</td>
+                      <td>{{ $row->jabatan }}</td>
+                      <td>
+                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-toggle="modal" data-target="#modal-xl-edit">Ubah</button>
+                        <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-xl-remove">Hapus</button>
+                      </td>
+                    </tr>
+                  @endforeach
                   </tbody>
                   <tfoot>
                     <tr>

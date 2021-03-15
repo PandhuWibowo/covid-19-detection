@@ -1,44 +1,42 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SignInController;
+use App\Http\Controllers\UserController;
 
 /**
  * Sign In
  */
-Route::get('/signin', function () {
+Route::middleware(['AuthCheck'])->get('/signin', function () {
     return view('front-layout.signin');
 });
+Route::post('auth/process', [SignInController::class, 'auth'])->name('auth');
+Route::get('auth/signout', [SignInController::class, 'signout'])->name('signout');
+
+/**
+ * Dashboard
+ */
+Route::middleware(['AuthCheck'])->get('dashboard', [SignInController::class, 'dashboard']);
 
 /**
  * Users
  */
-Route::prefix('users')->group(function() {
-    Route::get('/', function() {
-        return view('admin-dashboard.users.index');
-    });
+Route::middleware(['AuthCheck'])->prefix('users')->group(function() {
+    Route::get('/', [UserController::class, 'index']);
 });
 
 /**
  * Warga
  */
-Route::prefix('warga')->group(function() {
+Route::middleware(['AuthCheck'])->prefix('warga')->group(function() {
     Route::get('/', function() {
         return view('admin-dashboard.warga.index');
     });
 });
 
 /**
- * Peta
+ * Covid Tracer
  */
-Route::prefix('peta')->group(function() {
-    Route::get('/cari-alamat', function() {
-        return view('admin-dashboard.warga.index');
-    });
-});
-
-/**
- * Peta - Tanpa Login
- */
-Route::get('/cari-alamat', function() {
-    return view('front-layout.cari-alamat');
-});
+// Route::prefix('suspects')->group(function() {
+//     Route::get('/', );
+// });
