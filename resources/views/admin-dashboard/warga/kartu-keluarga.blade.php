@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -40,7 +40,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
+          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
           <a class="d-block">{{ Session::get('nama') }}</a>
@@ -85,12 +85,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Warga</h1>
+            <h1>Detil Kartu Keluarga</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              <li class="breadcrumb-item active">Warga</li>
+              <li class="breadcrumb-item active">Detil Kartu Keluarga</li>
             </ol>
           </div>
         </div>
@@ -101,6 +101,30 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">No. Kartu Keluarga : {{ $id_kk }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="nik_kepala_keluarga">NIK Kepala Keluarga</label>
+                    <input type="text" class="form-control" id="nik_kepala_keluarga" disabled placeholder="NIK Kepala Keluarga" value="{{ $anggota[0]->nik_kepala_keluarga }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="status_tempat_tinggal">Status Tempat Tinggal</label>
+                    <input type="text" class="form-control" id="status_tempat_tinggal" disabled placeholder="Status Tempat Tinggal" value="{{ $anggota[0]->status_tempat_tinggal }}">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
@@ -112,73 +136,44 @@
                     </button>
                   </div>
                 @endif
-                <a href="/warga/tambah-warga" class="btn btn-block btn-outline-primary btn-flat">Tambah Warga</a>
+                <a href="/warga/kartu-keluarga/{{ $id_kk }}/tambah-anggota-keluarga" class="btn btn-block btn-outline-primary btn-flat">Tambah Anggota Keluarga</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>No. Kartu Keluarga</th>
-                    <th>NIK Kepala Keluarga</th>
-                    <th>Status Tempat Tinggal</th>
+                    <th>NIK</th>
+                    <th>Nama</th>
+                    <th>No. Telepon</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach ($kartuKeluarga as $row)
-                      <tr>
-                        <td>{{ $row->id_kk }}</td>
-                        <td>{{ $row->nik_kepala_keluarga }}</td>
-                        <td>{{ $row->status_tempat_tinggal }}</td>
-                        <td>
-                          <a class="btn btn-block btn-outline-secondary btn-flat" href="/warga/kartu-keluarga/{{ $row->id_kk }}">Lihat</a>
-                          <a data-id_kk="{{ $row->id_kk }}" data-status_tempat_tinggal="{{ $row->status_tempat_tinggal }}" class="editStatusTempatTinggal btn btn-block btn-outline-info btn-flat">Ubah Status</a>
-                        </td>
-                      </tr>
+                    @foreach ($anggota as $row)
+                      @foreach($row->warga as $warga)
+                        <tr>
+                          <td>{{ $warga->nik }}</td>
+                          <td>{{ $warga->nama }}</td>
+                          <td>{{ $warga->no_telp }}</td>
+                          <td>
+                            <a href="/warga/kartu-keluarga/{{ $id_kk }}/ubah-anggota-keluarga/{{ $warga->nik }}" class="editAnggotaKeluarga btn btn-block btn-outline-secondary btn-flat">Ubah</a>
+                          </td>
+                        </tr>
+                      @endforeach
                     @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th>No. Kartu Keluarga</th>
-                      <th>NIK Kepala Keluarga</th>
-                      <th>Status Tempat Tinggal</th>
+                      <th>NIK</th>
+                      <th>Nama</th>
+                      <th>No. Telepon</th>
                       <th>Aksi</th>
                     </tr>
                   </tfoot>
                 </table>
               </div>
               <!-- /.card-body -->
-              <div class="modal fade" id="update-statusTempatTinggal">
-                <div class="modal-dialog modal-xl">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Ubah Status Tempat Tinggal</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <form role="form">
-                      <div class="modal-body">
-                        <div class="card-body">
-                          <input type="hidden" name="ubahIdKK" id="ubahIdKK">
-                          <div class="form-group">
-                            <label for="nama">Status Tempat Tinggal</label>
-                            <input type="text" class="form-control" id="ubahStatusTempatTinggal" placeholder="Status Tempat Tinggal">
-                          </div>
-                        </div>
-                        <!-- /.card-body -->
-                      </div>
-                      <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary" id="btn-ubah-status">Simpan</button>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-              </div>
             </div>
             <!-- /.card -->
           </div>
@@ -208,18 +203,18 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
+<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
-<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- DataTables -->
-<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="assets/dist/js/adminlte.min.js"></script>
+<script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="assets/dist/js/demo.js"></script>
+<script src="{{ asset('assets/dist/js/demo.js') }}"></script>
 <!-- page script -->
 <script>
   $(function () {
@@ -247,57 +242,6 @@
     });
   }
   $(document).ready(function() {
-    $('.editStatusTempatTinggal').on('click', function() {
-      // Dari Data Table
-      const idKK = $(this).data('id_kk')
-      const statusTempatTinggal = $(this).data('status_tempat_tinggal')
-
-      // Ke Modal
-      $('#ubahStatusTempatTinggal').val(statusTempatTinggal)
-      $('#ubahIdKK').val(idKK)
-      const editModal = $('#update-statusTempatTinggal')
-      editModal.modal('show')
-    })
-
-    $('#btn-ubah-status').on('click', function(e) {
-        e.preventDefault()
-
-        const idKK = $('#ubahIdKK').val()
-        const statusTempatTinggal = $('#ubahStatusTempatTinggal').val()
-
-        try {
-          if (!idKK || typeof idKK !== 'string') alert('No. Kartu Keluarga harus tidak boleh string kosong')
-          if (!statusTempatTinggal || typeof statusTempatTinggal !== 'string') alert('Status Tempat Tinggal harus tidak boleh string kosong')
-
-          csrfProtection()
-          $.ajax({
-            url: `/warga/${idKK}/status-tempat-tinggal`,
-            type: 'PUT',
-            dataType: 'json',
-            async: true,
-            data: { status_tempat_tinggal: statusTempatTinggal },
-            error: function (err) {
-              console.error(err)
-              alert(err)
-              return
-            },
-            success: function (response) {
-              console.log(response)
-              if (response.status === 200) {
-                alert(response.message)
-                const editModal = $('#update-statusTempatTinggal')
-                editModal.modal('hide')
-                location.reload()
-              } else alert(response.message)
-              return
-            }
-          })
-        } catch (err) {
-          console.error(err)
-          alert(err)
-          return
-        }
-      })
   })
 </script>
 </body>

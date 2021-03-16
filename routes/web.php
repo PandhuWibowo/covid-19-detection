@@ -41,6 +41,11 @@ Route::middleware(['AuthCheck'])->prefix('warga')->group(function() {
     Route::get('tambah-warga', [WargaController::class, 'addCitizen']);
     Route::post('/', [WargaController::class, 'createWarga']);
     Route::put('/{id_kk}/status-tempat-tinggal', [WargaController::class, 'updateStatusTempatTinggal']);
+    Route::get('kartu-keluarga/{id_kk}', [WargaController::class, 'getKartuKeluarga']);
+    Route::get('kartu-keluarga/{id_kk}/tambah-anggota-keluarga', [WargaController::class, 'addAnggotaKeluarga']);
+    Route::post('kartu-keluarga/tambah-anggota-keluarga', [WargaController::class, 'createAnggotaKeluarga']);
+    Route::get('kartu-keluarga/{id_kk}/ubah-anggota-keluarga/{nik}', [WargaController::class, 'editAnggotaKeluarga']);
+    Route::put('kartu-keluarga/{id_kk}/ubah-anggota-keluarga/{nik}', [WargaController::class, 'updateAnggotaKeluarga']);
 });
 
 /**

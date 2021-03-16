@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Warga;
 
 class KartuKeluarga extends Model
 {
@@ -16,4 +17,8 @@ class KartuKeluarga extends Model
     public $fillable = [
         'id_user', 'id_kk', 'nik_kepala_keluarga', 'status_tempat_tinggal'
     ];
+    public function warga()
+    {
+        return $this->belongsToMany(Warga::class, 'detil_kk', 'id_kk', 'nik_keluarga');
+    }
 }
