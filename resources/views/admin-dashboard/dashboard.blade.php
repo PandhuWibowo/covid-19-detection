@@ -68,7 +68,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Sign Out</a>
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>

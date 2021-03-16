@@ -59,12 +59,12 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id_user) {
         try {
-            // $request->validate([
-            //     'nama' => 'required|string',
-            //     'no_telp' => 'required|string|unique:users',
-            //     'jabatan' => 'required|string',
-            //     'alamat' => 'required|string'
-            // ]);
+            $request->validate([
+                'nama' => 'required|string',
+                'no_telp' => 'required|string|unique:users',
+                'jabatan' => 'required|string',
+                'alamat' => 'required|string'
+            ]);
 
             $userExisting = User::find($id_user);
             if (empty($userExisting)) return response()->json([

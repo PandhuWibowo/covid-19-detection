@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Warga extends Model
+class DetilKK extends Model
 {
     use HasFactory;
 
-    protected $table = 'citizens';
-    protected $primaryKey = 'nik';
+    protected $table = 'detil_kk';
+    protected $primaryKey = null;
     public $timestamps = false;
+    public $incrementing = false;
     public $fillable = [
-        'nik', 'id_user', 'nama', 'alamat', 'no_telp', 'pendidikan', 'pekerjaan', 'status_pernikahan', 'tgl_lahir'
+        'id_kk', 'nik_keluarga', 'status_keluarga'
     ];
 }

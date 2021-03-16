@@ -43,7 +43,7 @@
           <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Session::get('nama') }}</a>
+          <a class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Sign Out</a>
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>
