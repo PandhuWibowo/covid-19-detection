@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Warga;
+use App\Models\Pasien;
 
 class KartuKeluarga extends Model
 {
@@ -20,5 +21,9 @@ class KartuKeluarga extends Model
     public function warga()
     {
         return $this->belongsToMany(Warga::class, 'detil_kk', 'id_kk', 'nik_keluarga');
+    }
+
+    public function pasien() {
+        return $this->hasOne(Pasien::class, 'id_pendataan');
     }
 }

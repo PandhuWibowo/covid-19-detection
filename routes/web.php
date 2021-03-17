@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SignInController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\PasienController;
 
 Route::get('/', function() {
     return redirect('signin');
@@ -51,6 +52,8 @@ Route::middleware(['AuthCheck'])->prefix('warga')->group(function() {
 /**
  * Covid Tracer
  */
-// Route::prefix('suspects')->group(function() {
-//     Route::get('/', );
-// });
+Route::prefix('pasien-covid')->group(function() {
+    Route::get('/', [PasienController::class, 'index']);
+    Route::get('/tambah-pasien', [PasienController::class, 'tambahPasien']);
+    Route::post('/simpan-pasien-covid', [PasienController::class, 'simpanPasienCovid']);
+});

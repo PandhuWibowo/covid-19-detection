@@ -69,7 +69,7 @@ class WargaController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => 'Internal Server Error',
-                'error' => $e
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -96,7 +96,7 @@ class WargaController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => 'Internal Server Error',
-                'error' => $e
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -162,7 +162,7 @@ class WargaController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => 'Internal Server Error',
-                'error' => $e
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -213,7 +213,7 @@ class WargaController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => 'Internal Server Error',
-                'error' => $e
+                'error' => $e->getMessage()
             ], 500);
         }
     }

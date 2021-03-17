@@ -25,4 +25,8 @@ class Warga extends Model
     public function detil_kk() {
         return $this->hasMany(DetilKK::class, 'nik_keluarga', 'nik');
     }
+
+    public function pasien() {
+        return $this->hasMany(Pasien::class, 'id_pendataan');
+    }
 }

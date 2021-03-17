@@ -40,7 +40,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
+          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="{{ Session::get('id_user') }}">
         </div>
         <div class="info">
           <a class="d-block">{{ Session::get('nama') }}</a>
@@ -75,7 +75,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
+            <a href="/signout">
+              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
+            </a>
           </li>
         </ul>
       </nav>
@@ -91,12 +93,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Detil Kartu Keluarga</h1>
+            <h1>Pasien Covid</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              <li class="breadcrumb-item active">Detil Kartu Keluarga</li>
+              <li class="breadcrumb-item active">Pasien Covid</li>
             </ol>
           </div>
         </div>
@@ -107,79 +109,38 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-12">
             <!-- general form elements -->
             <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">No. Kartu Keluarga : {{ $id_kk }}</h3>
-              </div>
-              <!-- /.card-header -->
               <!-- form start -->
               <form role="form">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="nik_kepala_keluarga">NIK Kepala Keluarga</label>
-                    <input type="text" class="form-control" id="nik_kepala_keluarga" disabled placeholder="NIK Kepala Keluarga" value="{{ $anggota[0]->nik_kepala_keluarga }}">
+                    <label for="status_pernikahan">Nama Warga</label>
+                    <select class="form-control" id="nik" name="nik">
+                      @foreach ($warga as $row)
+                        <option value="{{ $row->nik }}">{{ $row->nama }}</option>
+                      @endforeach
+                    </select>
                   </div>
                   <div class="form-group">
-                    <label for="status_tempat_tinggal">Status Tempat Tinggal</label>
-                    <input type="text" class="form-control" id="status_tempat_tinggal" disabled placeholder="Status Tempat Tinggal" value="{{ $anggota[0]->status_tempat_tinggal }}">
+                    <label for="tanggal_terinfeksi">Tanggal Terinfeksi</label>
+                    <input type="date" class="form-control" id="tanggal_terinfeksi" value="2021-01-01" placeholder="Tanggal Terinfeksi">
+                  </div>
+                  <div class="form-group">
+                    <label for="status_virus">Status Virus</label>
+                    <input type="text" class="form-control" id="status_virus" placeholder="Status Virus">
+                  </div>
+                  <div class="form-group">
+                    <label for="status_penanganan">Status Penanganan</label>
+                    <textarea class="form-control" rows="3" placeholder="Status Penanganan" id="status_penanganan"></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
+                </div>
               </form>
-            </div>
-            <!-- /.card -->
-          </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                @if(Session::has('invalid_id'))
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Invalid No. Kartu Keluarga</strong> {{ Session::get('invalid_id') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                @endif
-                <a href="/warga/kartu-keluarga/{{ $id_kk }}/tambah-anggota-keluarga" class="btn btn-block btn-outline-primary btn-flat">Tambah Anggota Keluarga</a>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>NIK</th>
-                    <th>Nama</th>
-                    <th>No. Telepon</th>
-                    <th>Aksi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    @foreach ($anggota as $row)
-                      @foreach($row->warga as $warga)
-                        <tr>
-                          <td>{{ $warga->nik }}</td>
-                          <td>{{ $warga->nama }}</td>
-                          <td>{{ $warga->no_telp }}</td>
-                          <td>
-                            <a href="/warga/kartu-keluarga/{{ $id_kk }}/ubah-anggota-keluarga/{{ $warga->nik }}" class="editAnggotaKeluarga btn btn-block btn-outline-secondary btn-flat">Ubah</a>
-                          </td>
-                        </tr>
-                      @endforeach
-                    @endforeach
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>NIK</th>
-                      <th>Nama</th>
-                      <th>No. Telepon</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
             </div>
             <!-- /.card -->
           </div>
@@ -221,24 +182,6 @@
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
 <script>
   function csrfProtection() {
     $.ajaxSetup({
@@ -247,7 +190,65 @@
       }
     });
   }
+
   $(document).ready(function() {
+    $("#btn-save").on('click', function(e) {
+      e.preventDefault()
+
+      const nik = $('#nik').val()
+      const statusVirus = $('#status_virus').val()
+      const tanggalTerinfeksi = $('#tanggal_terinfeksi').val()
+      const statusPenanganan = $('#status_penanganan').val()
+
+      try {
+        csrfProtection()
+        if (!nik || typeof nik !== 'string') {
+          alert('NIK harus tidak boleh string kosong')
+          return
+        }
+        if (!statusVirus || typeof statusVirus !== 'string') {
+          alert('Virus harus tidak boleh string kosong')
+          return
+        }
+        if (!tanggalTerinfeksi) {
+          alert('Tanggal Terinfeksi harus tidak boleh kosong')
+          return
+        }
+        if (!statusPenanganan || typeof statusPenanganan !== 'string') {
+          alert('Status Penanganan harus tidak boleh string kosong')
+          return
+        }
+        $.ajax({
+            url: '/pasien-covid/simpan-pasien-covid',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {
+              nik,
+              status_virus: statusVirus,
+              tanggal_terinfeksi: tanggalTerinfeksi,
+              status_penanganan: statusPenanganan
+            },
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 201) {
+                alert(response.message)
+                window.location.href="/pasien-covid"
+              } else alert(response.message)
+              return
+            }
+          })
+      } catch (error) {
+        console.error(error)
+        alert(error)
+        return
+      }
+    })
   })
 </script>
 </body>

@@ -69,6 +69,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/pasien-covid" class="nav-link">
+              <i class="nav-icon fas fa-head-side-cough"></i>
+              <p>Pasien</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/signout">
               <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
             </a>

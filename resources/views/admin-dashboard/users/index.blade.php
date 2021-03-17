@@ -69,6 +69,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/pasien-covid" class="nav-link">
+              <i class="nav-icon fas fa-head-side-cough"></i>
+              <p>Pasien</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
