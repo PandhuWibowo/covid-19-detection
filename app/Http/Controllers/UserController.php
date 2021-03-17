@@ -61,7 +61,7 @@ class UserController extends Controller
         try {
             $request->validate([
                 'nama' => 'required|string',
-                'no_telp' => 'required|string|unique:users',
+                'no_telp' => 'required|string',
                 'jabatan' => 'required|string',
                 'alamat' => 'required|string'
             ]);
