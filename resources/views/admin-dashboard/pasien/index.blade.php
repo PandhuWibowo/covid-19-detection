@@ -136,16 +136,7 @@
                       <td>{{ $row->tgl_terinfeksi }}</td>
                       <td>{{ $row->status_virus }}</td>
                       <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ubah Status Pasien</button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item">OTG</a>
-                            <a class="dropdown-item">ODP</a>
-                            <a class="dropdown-item">Positif</a>
-                            <a class="dropdown-item">Negatif/Sembuh</a>
-                          </div>
-                        </div>
-                        <a class="editStatusPenanganan btn btn-block btn-outline-secondary btn-flat">Ubah Status Penanganan</a>
+                        <a class="editStatus btn btn-block btn-outline-secondary btn-flat" data-id_pendataan="{{ $row->id_pendataan }}" data-status_virus="{{ $row->status_virus }}" data-status_penanganan="{{ $row->status_penanganan }}">Ubah Status</a>
                       </td>
                     </tr>
                   @endforeach
@@ -164,6 +155,46 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="modal fade" id="update-status">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ubah Status</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form role="form">
+                      <div class="modal-body">
+                        <div class="card-body">
+                          <input type="hidden" class="form-control" name="ubahIdPendataan" id="ubahIdPendataan">
+                          <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" id="ubahStatusVirus" aria-placeholder="Status">
+                              <option>OTG</option>
+                              <option>Bergejala</option>
+                              <option>Positif</option>
+                              <option>Meninggal</option>
+                              <option>Negatif/Sembuh</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="ubahStatusPenanganan">Status Penanganan</label>
+                            <textarea class="form-control" rows="3" placeholder="Status Penanganan" id="ubahStatusPenanganan"></textarea>
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-ubah-status">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
             </div>
             <!-- /.card -->
           </div>
@@ -232,7 +263,71 @@
     });
   }
   $(document).ready(function() {
+    $('.editStatus').on('click', function() {
+      // Dari Data Table
+      const idPendataan = $(this).data('id_pendataan')
+      const statusVirus = $(this).data('status_virus')
+      const statusPenanganan = $(this).data('status_penanganan')
 
+      // Ke Modal
+      $('#ubahIdPendataan').val(idPendataan)
+      $('#ubahStatusPenanganan').val(statusPenanganan)
+      $('#ubahStatusVirus').val(statusVirus)
+
+      const editModal = $('#update-status')
+      editModal.modal('show')
+    })
+    $('#btn-ubah-status').on('click', function(e) {
+      e.preventDefault()
+
+      const idPendataan = $('#ubahIdPendataan').val()
+      const statusVirus = $('#ubahStatusVirus').val()
+      const statusPenanganan = $('#ubahStatusPenanganan').val()
+
+      try {
+        csrfProtection()
+        if (!idPendataan || typeof idPendataan !== 'string') {
+          alert('Id Pendataan harus tidak boleh string kosong')
+          return
+        }
+        if (!statusVirus || typeof statusVirus !== 'string') {
+          alert('Status harus tidak boleh string kosong')
+          return
+        }
+        if (!statusPenanganan || typeof statusPenanganan !== 'string') {
+          alert('Status Penanganan harus tidak boleh string kosong')
+          return
+        }
+
+        $.ajax({
+            url: `/pasien-covid/ubah-status-covid/${idPendataan}`,
+            type: 'PUT',
+            dataType: 'json',
+            async: true,
+            data: {
+              status_virus: statusVirus,
+              status_penanganan: statusPenanganan
+            },
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 200) {
+                alert(response.message)
+                return window.location=`/pasien-covid`
+              } else alert(response.message)
+              return
+            }
+          })
+      } catch (error) {
+        console.error(error)
+        alert(error)
+        return
+      }
+    })
   })
 </script>
 </body>

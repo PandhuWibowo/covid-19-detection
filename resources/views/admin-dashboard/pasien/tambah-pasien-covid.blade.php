@@ -128,8 +128,14 @@
                     <input type="date" class="form-control" id="tanggal_terinfeksi" value="2021-01-01" placeholder="Tanggal Terinfeksi">
                   </div>
                   <div class="form-group">
-                    <label for="status_virus">Status Virus</label>
-                    <input type="text" class="form-control" id="status_virus" placeholder="Status Virus">
+                    <label for="status_virus">Status</label>
+                    <select class="form-control" id="status_virus">
+                      <option>OTG</option>
+                      <option>Bergejala</option>
+                      <option>Positif</option>
+                      <option>Meninggal</option>
+                      <option>Negatif/Sembuh</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="status_penanganan">Status Penanganan</label>

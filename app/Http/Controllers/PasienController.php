@@ -60,4 +60,32 @@ class PasienController extends Controller
             ], 500);
         }
     }
+
+    public function ubahStatusCovid(Request $request, $id_pendataan) {
+        try {
+            $pasienExisting = Pasien::find($id_pendataan);
+            if (empty($pasienExisting)) return response()->json([
+                'status' => 400,
+                'message' => 'No. Pasien tidak terdaftar'
+            ], 400);
+            if ($request->status_virus === 'Negatif/Sembuh') $pasienExisting->tgl_sembuh = Carbon::now();
+            $pasienExisting->status_virus = $request->status_virus;
+            $pasienExisting->status_penanganan = $request->status_penanganan;
+            if ($pasienExisting->save()) return response()->json([
+                'status' => 200,
+                'message' => 'Status berhasil diubah'
+            ], 200);
+
+            return response()->json([
+                'status' => 400,
+                'message' => 'Status gagal diubah'
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

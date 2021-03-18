@@ -56,4 +56,5 @@ Route::prefix('pasien-covid')->group(function() {
     Route::get('/', [PasienController::class, 'index']);
     Route::get('/tambah-pasien', [PasienController::class, 'tambahPasien']);
     Route::post('/simpan-pasien-covid', [PasienController::class, 'simpanPasienCovid']);
+    Route::put('/ubah-status-covid/{id_pendataan}', [PasienController::class, 'ubahStatusCovid']);
 });
