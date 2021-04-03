@@ -50,7 +50,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => 'beneteen_covid19_detection',
             'username' => 'beneteen_covid19_detection',
-            'password' => '?EgZw1QH[*&a',
+            'password' => 'I*8g#}CHzaJq',
             // 'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
