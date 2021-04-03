@@ -70,6 +70,8 @@ return [
     // 'timezone' => 'UTC',
     'timezone' => 'Asia/Jakarta',
 
+    'log' => 'errorlog',
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
