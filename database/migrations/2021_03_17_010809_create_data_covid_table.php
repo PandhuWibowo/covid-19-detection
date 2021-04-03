@@ -22,7 +22,7 @@ class CreateDataCovidTable extends Migration
             $table->string('nik', 20);
             $table->string('status_virus');
             $table->string('status_penanganan');
-            $table->date('tgl_sembuh');
+            $table->date('tgl_sembuh')->nullable();
             $table->string('id_kk', 20);
 
             $table->foreign('id_user')->references('id_user')->on('users');
