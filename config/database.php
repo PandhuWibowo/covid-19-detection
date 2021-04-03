@@ -46,7 +46,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             // 'url' => env('DATABASE_URL'),
-            'host' => 'db4free.net',
+            'host' => 'beneteen.com',
             'port' => env('DB_PORT', '3306'),
             'database' => 'beneteen_covid19_detection',
             'username' => 'beneteen_covid19_detection',
