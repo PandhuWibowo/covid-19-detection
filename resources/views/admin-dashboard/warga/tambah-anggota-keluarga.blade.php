@@ -56,22 +56,30 @@
               <p>Dashboard</p>
             </a>
           </li>
+          @if(Session::get('jabatan') === 'sekretaris')
+            <li class="nav-item">
+              <a href="/users" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Users</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/warga" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Warga</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/pasien-covid" class="nav-link">
+                <i class="nav-icon fas fa-head-side-cough"></i>
+                <p>Pasien</p>
+              </a>
+            </li>
+          @endif
           <li class="nav-item">
-            <a href="/users" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Users</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/warga" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Warga</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/pasien-covid" class="nav-link">
-              <i class="nav-icon fas fa-head-side-cough"></i>
-              <p>Pasien</p>
+            <a href="/reports" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>Reports</p>
             </a>
           </li>
           <li class="nav-item">

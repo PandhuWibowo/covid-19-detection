@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -98,17 +99,80 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Dashboard</h1>
+            <h1>Laporan Data Kartu Keluarga</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              {{-- <li class="breadcrumb-item active">Users</li> --}}
+              <li class="breadcrumb-item active">Reports</li>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <form action="{{ url('reports/excel/family') }}" method="POST">
+                  @csrf
+                  @method('POST')
+                  <div class="form-group">
+                    <label>No. Kartu Keluarga</label>
+                    <select class="js-example-basic-single form-control" name="idKK" id="idKK">
+                      @foreach($kartuKeluarga as $row)
+                        <option value="{{ $row->id_kk }}">{{ $row->id_kk }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-block btn-outline-primary btn-flat" id="print">Print</button>
+                </form>
+              </div>
+              <!-- /.card-header -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Laporan Data Pasien Covid19</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#add-user">Tambah User</button>
+              </div>
+              <!-- /.card-header -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -140,5 +204,12 @@
 <script src="assets/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="assets/dist/js/demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+  });
+</script>
 </body>
 </html>

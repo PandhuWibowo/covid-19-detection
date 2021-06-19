@@ -22,6 +22,7 @@ class SignInController extends Controller
                 $request->session()->put('id_user', $userInfo->id_user);
                 $request->session()->put('nama', $userInfo->nama);
                 $request->session()->put('no_telp', $userInfo->no_telp);
+                $request->session()->put('jabatan', $userInfo->jabatan);
                 return redirect()->intended('dashboard');
             } else return back()->with('failed', 'Password salah');
         }
@@ -36,6 +37,7 @@ class SignInController extends Controller
             session()->pull('id_user');
             session()->pull('nama');
             session()->pull('no_telp');
+            session()->pull('jabatan');
             return redirect('signin');
         }
         dd('diluar if');
