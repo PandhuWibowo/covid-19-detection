@@ -66,4 +66,5 @@ Route::middleware(['AuthCheck'])->prefix('pasien-covid')->group(function() {
 Route::prefix('reports')->group(function() {
     Route::get('/', [ReportController::class, 'index']);
     Route::post('excel/family', [ReportController::class, 'getFamily']);
+    Route::post('excel/patient', [ReportController::class, 'getPatient']);
 });

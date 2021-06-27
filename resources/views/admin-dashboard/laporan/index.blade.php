@@ -121,8 +121,8 @@
                   @csrf
                   @method('POST')
                   <div class="form-group">
-                    <label>No. Kartu Keluarga</label>
-                    <select class="js-example-basic-single form-control" name="idKK" id="idKK">
+                    <label>No. Kartu Keluarga</label><br>
+                    <select class="js-example-basic-single form-control" name="idKK" id="idKK" style="width: 100%">
                       @foreach($kartuKeluarga as $row)
                         <option value="{{ $row->id_kk }}">{{ $row->id_kk }}</option>
                       @endforeach
@@ -159,8 +159,33 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
+              @if (Session::has('sign_important'))
+                <div class="alert alert-danger alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>	
+                  <strong>{{ Session::get('sign_important') }}</strong>
+                </div>
+              @endif
+
+              @if (Session::has('out_of_range'))
+                <div class="alert alert-danger alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>	
+                  <strong>{{ Session::get('out_of_range') }}</strong>
+                </div>
+              @endif
               <div class="card-header">
-                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#add-user">Tambah User</button>
+                <form action="{{ url('reports/excel/patient') }}" method="POST">
+                  @csrf
+                  @method('Post')
+                  <div class="row g-3 mb-3">
+                    <div class="col">
+                      <input type="date" class="form-control" placeholder="Start date" aria-label="Start date" name="startDate">
+                    </div>
+                    <div class="col">
+                      <input type="date" class="form-control" placeholder="End date" aria-label="End date" name="endDate">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-block btn-outline-primary btn-flat">Print</button>
+                </form>
               </div>
               <!-- /.card-header -->
             </div>

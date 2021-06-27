@@ -33,13 +33,11 @@ class SignInController extends Controller
     }
 
     public function signout() {
-        if (session()->has('id_user')) {
-            session()->pull('id_user');
-            session()->pull('nama');
-            session()->pull('no_telp');
-            session()->pull('jabatan');
-            return redirect('signin');
-        }
-        dd('diluar if');
+        session()->pull('id_user');
+        session()->pull('nama');
+        session()->pull('no_telp');
+        session()->pull('jabatan');
+
+        return redirect('signin');
     }
 }
